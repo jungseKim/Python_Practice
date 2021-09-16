@@ -143,11 +143,11 @@ tp=[1,2,3,4,5,6,7,8,9]
 # 시험 문제 나옴 
 # enumerate
 
-arr1=[1,2,3,4]
-arr2=[9,'5','4']
-arr3=['a','b','c']
-for i,j,k in zip(arr1,arr2,arr3):
-    print(i,j,k)
+# arr1=[1,2,3,4]
+# arr2=[9,'5','4']
+# arr3=['a','b','c']
+# for i,j,k in zip(arr1,arr2,arr3):
+#     print(i,j,k)
 # arr=[i for i in range(0,5,2)]
 # print(arr)
 
@@ -167,7 +167,7 @@ for i,j,k in zip(arr1,arr2,arr3):
 
 
 # 방법 2개
-n=int(input())
+# n=int(input())
 # list=[0]*n
 # s=input()
 # for i in range(n):
@@ -177,9 +177,15 @@ n=int(input())
 # list=[s for i in range(n)]
 # print(list)
 
-n=int(input())
-arr=[i for i in range(n)]
-for i in range(n):
-    arr[i]=int(input())
-arr2=[s for s in arr if s>=0] 
+# n=int(input())
+# arr=[i for i in range(n)]
+# for i in range(n):
+#     arr[i]=int(input())
+# arr2=[s for s in arr if s>=0] 
+# print(arr2)
+
+
+a=int(input())
+arr=[int(input()) for x in range(a)]
+arr2=[x for x in arr if x>0]
 print(arr2)
