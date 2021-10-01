@@ -1,7 +1,12 @@
 def solution(sizes):
-    maxW = max([x[0] for x in sizes])
-    maxH = max([x[1] for x in sizes])
-    for w, h in sizes:
-        if(h <= maxW and w <= maxH):
-            maxH = w
-    return maxH*maxW
+    top = []
+    low = []
+    for x, y in sizes:
+        if(x > y):
+            top.append(x)
+            low.append(y)
+        else:
+            low.append(x)
+            top.append(y)
+
+    return max(top)*max(low)
