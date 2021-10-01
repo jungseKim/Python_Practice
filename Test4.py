@@ -6,3 +6,5 @@
 
 
 # print(go(1))
+list = [1, 2, 3, 4]
+print(list.pop())
