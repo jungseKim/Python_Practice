@@ -6,16 +6,21 @@ def solution(new_id):
         if(arr.count(x) == 0 and not(96 < ord(x) < 123)):
             new_id = new_id.replace(x, '')
     new_id = new_id.replace('..', '.')
-    if(new_id[0] == '.'):
-        del new_id[0]
-    if(new_id[-1] == '.'):
-        del new_id[-1]
+
+    if(len(new_id) > 1):
+        if(new_id[-1] == '.'):
+            new_id = new_id[0:-1]
+        if(new_id[0] == '.'):
+            new_id = new_id[1:]
     if(len(new_id) == 0):
         new_id = 'a'
     if(len(new_id) > 15):
-        del new_id[15, -1]
-    while len(new_id) > 2:
+        new_id = new_id[0:15]
+    if(new_id[-1] == '.'):
+        new_id = new_id[0:-1]
+    while len(new_id) <= 2:
         new_id = new_id+new_id[-1]
+    return new_id
 
-    answer = ''
-    return answer
+
+print(solution("=.="))

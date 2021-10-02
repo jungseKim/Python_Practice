@@ -20,4 +20,5 @@ def merge_sort(list):
         return merge(arr, arr2)
 
 
-print(merge_sort([1, 3, 7, 2, 2, 3, 4, 23, 22, 2, 2, 4, 6, 8]))
+print(merge_sort([1, 3, 7, 2, 2, 3, 4, 23, 22, 2, 2, 4,
+      6, 8, 1, 3, 7, 2, 2, 3, 4, 23, 22, 2, 2, 4, 6, 8]))
