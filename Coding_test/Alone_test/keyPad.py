@@ -6,7 +6,7 @@ def solution(numbers, hand):
              ['*', 0, '#']]
     left = [3, 0]
     right = [3, 2]
-
+    #  ss
     for x in numbers:
         temp = [0, 0]
         for index, y in enumerate(match):
