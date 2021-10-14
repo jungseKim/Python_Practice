@@ -21,3 +21,9 @@
 #             answer[2]=answer[2]+1
 #     return sum(answer)
 # print(solution([1,2,3,4,5]))
+
+temp = [[1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        ['*', 0, '#']]
+print(temp.index(3))
