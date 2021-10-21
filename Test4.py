@@ -199,14 +199,27 @@ def fa2(x):
 # print(fa()(1, 2))
 
 
-a = int(input())
-set = [int(input()) for x in range(a)]
-temp = [0]*max(set)
-temp[0] = [1, 0]
-temp[1] = [0, 1]
-for x in range(2, a):
-    a = temp[x-1][0]+temp[x-2][0]
-    b = temp[x-1][1]+temp[x-2][1]
-    temp[x] = [a, b]
-for x in set:
-    print(temp[x][0], temp[x][1])
+# a = int(input())
+# set = [int(input()) for x in range(a)]
+# temp = [0]*max(set)
+# temp[0] = [1, 0]
+# temp[1] = [0, 1]
+# for x in range(2, a):
+#     a = temp[x-1][0]+temp[x-2][0]
+#     b = temp[x-1][1]+temp[x-2][1]
+#     temp[x] = [a, b]
+# for x in set:
+#     print(temp[x][0], temp[x][1])
+
+# li=[0,1,2,3,4,5,6]
+# print(li[3::-1])
+
+# xy={"x":2,"y":1}
+# for index,x in enumerate(xy):
+#         print(index,x,xy[x])
+
+class Student():
+    a=10
+    def __init__(self,cn=20):
+        self.a=20
+        self.jo=cn
