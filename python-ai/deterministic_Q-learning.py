@@ -20,6 +20,10 @@ env = gym.make('FrozenLake-v3')
 Q = np.zeros([env.observation_space.n, env.action_space.n])
 num_episodes = 2000
 
+# print(env.observation_space.n, env.action_space.n)
+#         16x4
+# print(Q)
+#         list:4x16
 rList = []
 dis = 0.99
 for i in range(num_episodes):
