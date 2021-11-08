@@ -18,6 +18,7 @@ class State:
     # get unique hash of current board state
     def getHash(self):
         self.boardHash = str(self.board.reshape(BOARD_COLS * BOARD_ROWS))
+        # [0. 0. 0. 0. 0. 0. 1. 0. 0.]
         return self.boardHash
 
     def winner(self):
@@ -63,7 +64,8 @@ class State:
         for i in range(BOARD_ROWS):
             for j in range(BOARD_COLS):
                 if self.board[i, j] == 0:
-                    positions.append((i, j))  # need to be tuple
+                    positions.append((i, j))  # 이게 배열임
+                    # [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
         return positions
 
     def updateState(self, position):
@@ -104,7 +106,6 @@ class State:
                 # take action and upate board state
                 self.updateState(p1_action)
                 board_hash = self.getHash()
-                # [0. 0. 0. 0. 0. 0. 1. 0. 0.]
                 self.p1.addState(board_hash)
                 # check board status if it is end
 
@@ -208,6 +209,7 @@ class Player:
             # take random action
             idx = np.random.choice(len(positions))
             action = positions[idx]
+            # return 값이 (0,0)형태임
         else:
             value_max = -999
             for p in positions:
