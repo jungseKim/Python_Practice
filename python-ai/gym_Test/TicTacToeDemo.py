@@ -46,6 +46,7 @@ class Border:
             self.done = True
 
     def step(self, action, symbol):
+        # print(action)
         self.state[action] = symbol
         endResult = symbol*3
 
@@ -54,7 +55,7 @@ class Border:
         if(self.done == False):
             self.symbol = self.symbol*-1
 
-        return self.getHash(),
+        return self.getHash()
 
 
 class Player:
@@ -66,37 +67,41 @@ class Player:
         idx = np.random.choice(len(positions))
         return positions[idx]
 
+
 class Qplayer:
-    def __init__(self, symbol,gama=0.9,sotf=0.7):
+    def __init__(self, symbol, gama=0.9, sotf=0.7):
         self.symbol = symbol
         self.count = 0
-        self.gama=gama
-        self.soft=sotf
-        self.states=[]
-        self.states_value={}
-        self.exp_rate=0.15
+        self.gama = gama
+        self.soft = sotf
+        self.states = []
+        self.states_value = {}
+        self.exp_rate = 0.15
 
-    def update(self,postion):
+    def update(self, postion):
         self.states.append(postion)
-        
-    def rewardUpdate(self,reward):
+
+    def rewardUpdate(self, reward):
         for s in reversed(self.states):
             if self.states_value.get(s) is None:
-                self.states_value[s]=0
-            self.states_value[s]=(1-self.soft)*self.states_value[s]\
-                +self.soft*(self.gama*reward)
-            reward=self.states_value[s]
-        self.states=[]
+                self.states_value[s] = 0
+            self.states_value[s] += self.soft * \
+                (self.gama * reward - self.states_value[s])
+            reward = self.states_value[s]
+        self.states = []
 
-    def randomChoice(self,positions):
+    def randomChoice(self, positions):
         idx = np.random.choice(len(positions))
-        return positions[idx]
+        action = positions[idx]
+        # print(action)
+        return action
 
     def chooseAction(self, positions, current_board):
         if np.random.uniform(0, 1) <= self.exp_rate:
+            # print(np.random.uniform(0, 1),'zzz')
             return self.randomChoice(positions)
         else:
-            value_max = -1
+            value_max = -999
             for p in positions:
                 next_board = current_board.copy()
                 next_board[p] = self.symbol
@@ -107,37 +112,72 @@ class Qplayer:
                 if value >= value_max:
                     value_max = value
                     action = p
-            if value==0:
-                self.randomChoice(positions)
             return action
+
 
 if __name__ == "__main__":
     p1 = Qplayer(1)
-    p2 = Player(-1)
+    p2 = Qplayer(-1)
     border = Border()
 
-    for x in range(2000):
+    musyoubu = 0
+    for x in range(5000):
 
         while border.done == False:
             if len(border.availablePositions()) == 0:
                 p1.rewardUpdate(0.2)
+                p2.rewardUpdate(0.2)
+                musyoubu += 1
                 break
             position = border.availablePositions()
             if(border.symbol == 1):
-                action = p1.chooseAction(position,border.state)
-                position=border.step(action, 1)
+                action = p1.chooseAction(position, border.state)
+                position = border.step(action, 1)
                 p1.update(position)
             else:
-                action = p2.action(position)
-                border.step(action, -1)
+                action = p2.chooseAction(position, border.state)
+                position = border.step(action, -1)
+                p2.update(position)
             if(border.done):
                 if border.symbol == 1:
                     p1.rewardUpdate(1)
-                    p1.count+=1
+                    p1.count += 1
+                    p2.rewardUpdate(-1)
                 #       reward 주고 player 계산
                 else:
                     p1.rewardUpdate(-1)
+                    p2.rewardUpdate(1)
                     p2.count += 1
+        p2.exp_rate = (0.5-x/500)
+        p1.exp_rate = (0.5-x/500)
+
         border.reset()
 
-    print(p1.count/2000)
+    while border.done == False:
+        print(border.state)
+        if len(border.availablePositions()) == 0:
+            print('비김')
+            break
+
+        position = border.availablePositions()
+        if(border.symbol == 1):
+            check = int(input("Input your action row:"))
+            if(check < 4):
+                action = (0, check-1)
+            elif(check < 7 and check > 3):
+                action = (1, check-4)
+            else:
+                action = (2, check-7)
+            border.step(action, 1)
+
+        else:
+            action = p2.chooseAction(position, border.state)
+            position = border.step(action, -1)
+
+        if(border.done):
+            if border.symbol == 1:
+
+                print('니가이김')
+            else:
+                print('기계가이김')
+            print(border.state)
