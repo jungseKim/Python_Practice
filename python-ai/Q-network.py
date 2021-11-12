@@ -1,17 +1,20 @@
 import gym
 import numpy as np
 import tensorflow as tf
+from tensorflow.python.ops.gen_array_ops import shape
 env = gym.make('FrozenLake-v1')
 
 input_size = env.observation_space.n
 output_size = env.action_space.n
 ler_late = 0.1
 
-X = tf.concat([1, input_size])
-W = tf.Variable(tf.random_uniform([input_size, output_size], 0, 0.01))
+X = tf.constant(0, shape=(1, input_size), dtype=tf.float32)
+W = tf.Variable(tf.random.uniform([input_size, output_size], 0, 0.01))
+
+print(X)
 
 Qpred = tf.matmul(X, W)
-Y = tf.concat([1, output_size])
+Y = tf.constant(0, shape=(1, output_size), dtype=tf.float32)
 
 loss = tf.reduce_sum(tf.square(Y-Qpred))
 
