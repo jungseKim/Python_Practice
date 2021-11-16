@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import random
-import dqn
+
 # import collections import deque
 
 
@@ -14,5 +14,5 @@ class DQN:
 
         self._build_network()
 
-    def _build_network():
-       #  with tf.variable_scope(self.net_name)
+    # def _build_network():
+    #     with tf.variable_scope(self.net_name)

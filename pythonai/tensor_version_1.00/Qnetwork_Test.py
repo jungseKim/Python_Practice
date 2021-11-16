@@ -63,7 +63,16 @@ X = tf.placeholder(tf.float32, [1, 9])
 W = tf.get_variable("W1", shape=[9, 9],
                     initializer=tf.contrib.layers.xavier_initializer())
 
-Qpred = tf.matmul(X, W)
+l1 = tf.layers.dense(inputs=X, units=150, activation=tf.nn.relu)
+l2 = tf.layers.dense(inputs=l1, units=120, activation=tf.nn.relu)
+l3 = tf.layers.dense(inputs=l2, units=100, activation=tf.nn.relu)
+l4 = tf.layers.dense(inputs=l3, units=100, activation=tf.nn.relu)
+l5 = tf.layers.dense(inputs=l4, units=80, activation=tf.nn.relu)
+l6 = tf.layers.dense(inputs=l5, units=80, activation=tf.nn.relu)
+
+Qpred = tf.layers.dense(inputs=l6, units=9)
+
+# Qpred = tf.matmul(X, W)
 
 
 Y = tf.placeholder(shape=[1, 9], dtype=tf.float32)
@@ -93,7 +102,7 @@ if __name__ == "__main__":
     border = Border()
     p1 = Player(1)
     musyoubu = 0
-    for i in range(5000):
+    for i in range(100000):
 
         e = 1.0/((i/10)+1)
         while border.done == False:
@@ -118,8 +127,6 @@ if __name__ == "__main__":
                     action = position[check]
                 else:
                     tempQs = Qs[:]
-              #       np.sort(tempQs[0])
-              #       print(tempQs)
                     for check in reversed(np.argsort(tempQs[0])):
                         print(check)
                         if(check < 4):
@@ -131,10 +138,29 @@ if __name__ == "__main__":
                         if action in position:
                             # print(action)
                             break
-                print(action)
+
                 border.step(action, -1)
 
-              #   Qs1 = sess.run(Qpred, feed_dict={X: border.getHash()})
+                x1 = border.getHash()
+
+                Qs1 = sess.run(Qpred, feed_dict={X: x1})
+
+                position = border.availablePositions()
+                tempQs = Qs1[:]
+
+                for check2 in reversed(np.argsort(tempQs[0])):
+                    if(check < 4):
+                        action = (0, check2-1)
+                    elif(check < 7 and check2 > 3):
+                        action = (1, check2-4)
+                    else:
+                        action = (2, check2-7)
+                    if action in position:
+                        Qs[0, check] = 0.9*Qs1[0, check2]
+                        break
+
+                sess.run(train, feed_dict={X: x, Y: Qs})
+                # Qs1 = sess.run(Qpred, feed_dict={X: border.getHash()})
 
               #   Qs[0:check] = np.argmax(Qs1)
               #   sess.run(train, feed_dict={X: x, Y: Qs})
@@ -149,7 +175,7 @@ if __name__ == "__main__":
                     sess.run(train, feed_dict={X: x, Y: Qs})
 
         border.reset()
-    print(musyoubu/5000, '승부수')
+    print(musyoubu/100000, '이긴수')
     print('게이시작 아무 버튼 눌러주세요')
     while input() != 's':
         while border.done == False:
@@ -179,10 +205,8 @@ if __name__ == "__main__":
                     action = position[check]
                 else:
                     tempQs = Qs[:]
-              #       np.sort(tempQs[0])
-              #       print(tempQs)
+
                     for check in reversed(np.argsort(tempQs[0])):
-                        print(check)
                         if(check < 4):
                             action = (0, check-1)
                         elif(check < 7 and check > 3):
@@ -193,7 +217,6 @@ if __name__ == "__main__":
                             # print(action)
                             break
 
-                print(action)
                 border.step(action, -1)
 
             if(border.done):
