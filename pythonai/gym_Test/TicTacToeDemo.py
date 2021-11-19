@@ -1,6 +1,6 @@
 from pickle import STOP
 import numpy as np
-
+import pickle
 
 
 class Border:
@@ -21,7 +21,7 @@ class Border:
         for i in range(self.row):
             for j in range(self.col):
                 if self.state[i, j] == 0:
-                    positions.append((i, j))  
+                    positions.append((i, j))
         return positions
 
     def getHash(self):
@@ -102,15 +102,19 @@ class Qplayer:
                 next_board = current_board.copy()
                 next_board[p] = self.symbol
                 next_boardHash = str(next_board.reshape(9))
-    
+
                 value = 0 if self.states_value.get(
                     next_boardHash) is None else self.states_value.get(next_boardHash)
-               
+
                 if value >= value_max:
                     value_max = value
                     action = p
 
             return action
+
+    def save(self):
+        with open('qValue.p', 'wb') as f:
+            pickle.dump(self.states_value, f)
 
 
 if __name__ == "__main__":
@@ -148,6 +152,7 @@ if __name__ == "__main__":
         p2.exp_rate = (0.5-x/35000)
         p1.exp_rate = (0.5-x/35000)
         border.reset()
+    p2.save()
     print(musyoubu/10000, '무승부수')
     print('게이시작 아무 버튼 눌러주세요')
     while input() != 's':
